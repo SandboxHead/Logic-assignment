@@ -1,0 +1,242 @@
+let p1 = And(T, F);;
+let p2 = And(T, T);;
+let p3 = Or(T, F);;
+let p4 = Or(F, F);;
+let p5 = Impl(T, F);;
+let p6 = Impl(F, T);;
+
+let p7 = Or(T, L "a");;
+let p8 = And(F, L "b");;
+let p9 = Impl(F, L "c");;
+let p10 = Iff(T, L "d");;
+
+let p11 = Impl(p1, p2);;
+let p12 = Not(Iff(p3, p4));;
+
+let p13 = Iff(p10, p9);;
+
+let p14 = Not(And(p7, p8));;
+let p15 = Iff(Or(p7, p8), p9);;
+let p16 = Impl(Iff(p10, p9), p2);;
+let p17 = Not(And(Iff(p7, p8), Or(p8, p10)));;
+
+let p18 = And(And(Or(L "a", L "b"), And(T, L "c")), T);;
+
+
+let t1 = check_tautology p1;;
+let t2 = check_tautology p2;;
+let t3 = check_tautology p3;;
+let t4 = check_tautology p4;;
+let t5 = check_tautology p5;;
+let t6 = check_tautology p6;;
+let t7 = check_tautology p7;;
+let t8 = check_tautology p8;;
+let t9 = check_tautology p9;;
+let t10 = check_tautology p10;;
+let t11 = check_tautology p11;;
+let t12 = check_tautology p12;;
+let t13 = check_tautology p13;;
+let t14 = check_tautology p14;;
+let t15 = check_tautology p15;;
+let t16 = check_tautology p16;;
+let t17 = check_tautology p17;;
+let t18 = check_tautology p18;;
+
+
+
+# let p1 = And(T, F);;
+val p1 : prop = And (T, F)
+# let p2 = And(T, T);;
+val p2 : prop = And (T, T)
+# let p3 = Or(T, F);;
+val p3 : prop = Or (T, F)
+# let p4 = Or(F, F);;
+val p4 : prop = Or (F, F)
+# let p5 = Impl(T, F);;
+val p5 : prop = Impl (T, F)
+# let p6 = Impl(F, T);;
+val p6 : prop = Impl (F, T)
+#
+  let p7 = Or(T, L "a");;
+val p7 : prop = Or (T, L "a")
+# let p8 = And(F, L "b");;
+val p8 : prop = And (F, L "b")
+# let p9 = Impl(F, L "c");;
+val p9 : prop = Impl (F, L "c")
+# let p10 = Iff(T, L "d");;
+val p10 : prop = Iff (T, L "d")
+#
+  let p11 = Impl(p1, p2);;
+val p11 : prop = Impl (And (T, F), And (T, T))
+# let p12 = Not(Iff(p3, p4));;
+val p12 : prop = Not (Iff (Or (T, F), Or (F, F)))
+#
+  let p13 = Iff(p10, p9);;
+val p13 : prop = Iff (Iff (T, L "d"), Impl (F, L "c"))
+#
+  let p14 = Not(And(p7, p8));;
+val p14 : prop = Not (And (Or (T, L "a"), And (F, L "b")))
+# let p15 = Iff(Or(p7, p8), p9);;
+val p15 : prop = Iff (Or (Or (T, L "a"), And (F, L "b")), Impl (F, L "c"))
+# let p16 = Impl(Iff(p10, p9), p2);;
+val p16 : prop = Impl (Iff (Iff (T, L "d"), Impl (F, L "c")), And (T, T))
+# let p17 = Not(And(Iff(p7, p8), Or(p8, p10)));;
+val p17 : prop =
+  Not
+   (And
+     (Iff (Or (T, L "a"), And (F, L "b")),
+      Or (And (F, L "b"), Iff (T, L "d"))))
+#
+  let p18 = And(And(Or(L "a", L "b"), And(T, L "c")), T);;
+val p18 : prop = And (And (Or (L "a", L "b"), And (T, L "c")), T)
+# let t1 = check_tautology p1;;
+val t1 : tableau =
+  Beta (Node (And (T, F), false), Leaf (Node (T, false), -1, []),
+   Leaf (Node (F, false), 1, []))
+# let t2 = check_tautology p2;;
+val t2 : tableau =
+  Beta (Node (And (T, T), false), Leaf (Node (T, false), -1, []),
+   Leaf (Node (T, false), -1, []))
+# let t3 = check_tautology p3;;
+val t3 : tableau =
+  Alpha (Node (Or (T, F), false), Leaf (Node (T, false), -1, []))
+# let t4 = check_tautology p4;;
+val t4 : tableau =
+  Alpha (Node (Or (F, F), false),
+   Alpha (Node (F, false), Leaf (Node (F, false), 1, [])))
+# let t5 = check_tautology p5;;
+val t5 : tableau =
+  Alpha (Node (Impl (T, F), false),
+   Alpha (Node (T, true), Leaf (Node (F, false), 1, [])))
+# let t6 = check_tautology p6;;
+val t6 : tableau =
+  Alpha (Node (Impl (F, T), false), Leaf (Node (F, true), -1, []))
+# let t7 = check_tautology p7;;
+val t7 : tableau =
+  Alpha (Node (Or (T, L "a"), false), Leaf (Node (T, false), -1, []))
+# let t8 = check_tautology p8;;
+val t8 : tableau =
+  Beta (Node (And (F, L "b"), false), Leaf (Node (F, false), 1, []),
+   Leaf (Node (L "b", false), 1, [("b", false)]))
+# let t9 = check_tautology p9;;
+val t9 : tableau =
+  Alpha (Node (Impl (F, L "c"), false), Leaf (Node (F, true), -1, []))
+# let t10 = check_tautology p10;;
+val t10 : tableau =
+  Beta (Node (Iff (T, L "d"), false), Leaf (Node (T, false), -1, []),
+   Alpha (Node (T, true), Leaf (Node (L "d", false), 1, [("d", false)])))
+# let t11 = check_tautology p11;;
+val t11 : tableau =
+  Alpha (Node (Impl (And (T, F), And (T, T)), false),
+   Alpha (Node (And (T, F), true),
+    Alpha (Node (T, true), Leaf (Node (F, true), -1, []))))
+# let t12 = check_tautology p12;;
+val t12 : tableau =
+  Alpha (Node (Not (Iff (Or (T, F), Or (F, F))), false),
+   Beta (Node (Iff (Or (T, F), Or (F, F)), true),
+    Beta (Node (Or (T, F), true),
+     Alpha (Node (T, true),
+      Beta (Node (Or (F, F), true), Leaf (Node (F, true), -1, []),
+       Leaf (Node (F, true), -1, []))),
+     Leaf (Node (F, true), -1, [])),
+    Alpha (Node (Or (T, F), false), Leaf (Node (T, false), -1, []))))
+# let t13 = check_tautology p13;;
+val t13 : tableau =
+  Beta (Node (Iff (Iff (T, L "d"), Impl (F, L "c")), false),
+   Beta (Node (Iff (T, L "d"), false), Leaf (Node (T, false), -1, []),
+    Alpha (Node (T, true),
+     Alpha (Node (L "d", false),
+      Beta (Node (Impl (F, L "c"), true),
+       Leaf (Node (F, false), 1, [("d", false)]),
+       Leaf (Node (L "c", true), 1, [("c", true); ("d", false)]))))),
+   Beta (Node (Iff (T, L "d"), true),
+    Alpha (Node (T, true),
+     Alpha (Node (L "d", true),
+      Alpha (Node (Impl (F, L "c"), false),
+       Leaf (Node (F, true), -1, [("d", true)])))),
+    Leaf (Node (T, false), -1, [])))
+# let t14 = check_tautology p14;;
+val t14 : tableau =
+  Alpha (Node (Not (And (Or (T, L "a"), And (F, L "b"))), false),
+   Alpha (Node (And (Or (T, L "a"), And (F, L "b")), true),
+    Beta (Node (Or (T, L "a"), true),
+     Alpha (Node (T, true),
+      Alpha (Node (And (F, L "b"), true), Leaf (Node (F, true), -1, []))),
+     Alpha (Node (L "a", true),
+      Alpha (Node (And (F, L "b"), true),
+       Leaf (Node (F, true), -1, [("a", true)]))))))
+# let t15 = check_tautology p15;;
+val t15 : tableau =
+  Beta
+   (Node (Iff (Or (Or (T, L "a"), And (F, L "b")), Impl (F, L "c")), false),
+   Alpha (Node (Or (Or (T, L "a"), And (F, L "b")), false),
+    Alpha (Node (Or (T, L "a"), false), Leaf (Node (T, false), -1, []))),
+   Beta (Node (Or (Or (T, L "a"), And (F, L "b")), true),
+    Beta (Node (Or (T, L "a"), true),
+     Alpha (Node (T, true),
+      Alpha (Node (Impl (F, L "c"), false), Leaf (Node (F, true), -1, []))),
+     Alpha (Node (L "a", true),
+      Alpha (Node (Impl (F, L "c"), false),
+       Leaf (Node (F, true), -1, [("a", true)])))),
+    Alpha (Node (And (F, L "b"), true), Leaf (Node (F, true), -1, []))))
+# let t16 = check_tautology p16;;
+val t16 : tableau =
+  Alpha
+   (Node (Impl (Iff (Iff (T, L "d"), Impl (F, L "c")), And (T, T)), false),
+   Beta (Node (Iff (Iff (T, L "d"), Impl (F, L "c")), true),
+    Beta (Node (Iff (T, L "d"), true),
+     Alpha (Node (T, true),
+      Alpha (Node (L "d", true),
+       Beta (Node (Impl (F, L "c"), true),
+        Alpha (Node (F, false),
+         Beta (Node (And (T, T), false),
+          Leaf (Node (T, false), -1, [("d", true)]),
+          Leaf (Node (T, false), -1, [("d", true)]))),
+        Alpha (Node (L "c", true),
+         Beta (Node (And (T, T), false),
+          Leaf (Node (T, false), -1, [("c", true); ("d", true)]),
+          Leaf (Node (T, false), -1, [("c", true); ("d", true)])))))),
+     Leaf (Node (T, false), -1, [])),
+    Beta (Node (Iff (T, L "d"), false), Leaf (Node (T, false), -1, []),
+     Alpha (Node (T, true),
+      Alpha (Node (L "d", false),
+       Alpha (Node (Impl (F, L "c"), false),
+        Leaf (Node (F, true), -1, [("d", false)])))))))
+# let t17 = check_tautology p17;;
+val t17 : tableau =
+  Alpha
+   (Node
+     (Not
+       (And
+         (Iff (Or (T, L "a"), And (F, L "b")),
+          Or (And (F, L "b"), Iff (T, L "d")))),
+      false),
+   Alpha
+    (Node
+      (And
+        (Iff (Or (T, L "a"), And (F, L "b")),
+         Or (And (F, L "b"), Iff (T, L "d"))),
+       true),
+    Beta (Node (Iff (Or (T, L "a"), And (F, L "b")), true),
+     Beta (Node (Or (T, L "a"), true),
+      Alpha (Node (T, true),
+       Alpha (Node (And (F, L "b"), true), Leaf (Node (F, true), -1, []))),
+      Alpha (Node (L "a", true),
+       Alpha (Node (And (F, L "b"), true),
+        Leaf (Node (F, true), -1, [("a", true)])))),
+     Alpha (Node (Or (T, L "a"), false), Leaf (Node (T, false), -1, [])))))
+# let t18 = check_tautology p18;;
+val t18 : tableau =
+  Beta (Node (And (And (Or (L "a", L "b"), And (T, L "c")), T), false),
+   Beta (Node (And (Or (L "a", L "b"), And (T, L "c")), false),
+    Alpha (Node (Or (L "a", L "b"), false),
+     Alpha (Node (L "a", false),
+      Leaf (Node (L "b", false), 1, [("b", false); ("a", false)]))),
+    Beta (Node (And (T, L "c"), false), Leaf (Node (T, false), -1, []),
+     Leaf (Node (L "c", false), 1, [("c", false)]))),
+   Leaf (Node (T, false), -1, []))
+#
+
+
+
+
