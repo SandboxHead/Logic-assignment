@@ -173,7 +173,7 @@ let rec search_prop p treeList = match treeList with
 
 
 let rec graft_temp tree proofs = match tree with
-| Leaf(delta, p) -> search_prop p proofs
+| Leaf(delta, p) -> if(is_K p || is_R p || is_S p) then tree else search_prop p proofs
 | Node(delta, p, t1, t2) -> Node(delta, p, graft_temp t1 proofs, graft_temp t2 proofs)
 ;;
 
@@ -207,3 +207,44 @@ let rec deduction tree p gamma = match tree with
 
 let rec dedthm tree p = match tree with
 | Leaf(gamma, a) | Node(gamma, a, _, _) -> let gammadash = difference gamma (Set [p]) in deduction tree p gammadash;;
+
+(* Example *)
+
+let gamma = Set []
+let p1 = L "p";;
+let q1 = Impl(p1, p1);;
+let r1 = p1;;
+let k1 = form_k p1 q1;;
+let s1 = form_s p1 q1 r1;;
+let rem1 = Impl(Impl(p1, q1), Impl(p1, r1))
+
+let h1 = Node(gamma, rem1, Leaf (gamma, s1), Leaf (gamma, k1));;
+let k2 = form_k p1 p1;;
+
+let h2 = Node(gamma, Impl(p1, p1), h1, Leaf(gamma, k2));;
+
+valid_hprooftree h1;;
+valid_hprooftree h2;;
+
+let s1 = Set [L "q"];;
+
+let new_h2 = pad h2 s1;;
+
+prune new_h2;;
+
+let gamma2 = Set [rem1];;
+let h3 = Node(gamma2, Impl(p1, p1), Leaf(gamma2, rem1), Leaf(gamma2, k2));;
+
+let proofl = [h1];;
+graft h3 proofl;;
+
+valid_hprooftree (dedthm h3 rem1);;
+
+let p1 = L "p1";;
+let q1 = L "q1";;
+let p2 = L "p2";;
+
+(* let q1 = Impl(p, q);; *)
+let gamma = Set [p2; Impl(p2, Impl(p1, q1)); L "k"];;
+
+let h5 = Node(gamma, Impl(p1, q1), Leaf(gamma, Impl(p2, Impl(p1, q1)), Leaf(gamma, p2)));;
